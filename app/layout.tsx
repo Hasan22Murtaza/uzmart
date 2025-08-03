@@ -60,10 +60,17 @@ export default async ({ children }: { children: React.ReactNode }) => {
     buildUrlQueryParams("v1/rest/countries", { has_price: true, country_id: cookieCountryId })
   );
 
-  const ipInfo = await fetch("https://ipapi.co/json/").then((ip) => ip.json());
-  const defaultCountry = countries?.data.find(
-    (country) => country.code === ipInfo?.country_code?.toLowerCase()
-  );
+  const ipInfo = await fetch("https://ipapi.co/json/")
+    .then((ip) => {
+      if (!ip.ok) {
+        throw new Error(`IP API error: ${ip.status}`);
+      }
+      return ip.json();
+    })
+    .catch(() => ({ country_code: null }));
+  const defaultCountry =
+    countries?.data.find((country) => country.code === ipInfo?.country_code?.toLowerCase()) ||
+    countries?.data?.[0];
 
   return (
     <html

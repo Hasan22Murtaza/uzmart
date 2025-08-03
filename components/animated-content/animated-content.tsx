@@ -1,4 +1,4 @@
-import Lottie from "react-lottie";
+import Lottie from "lottie-react";
 import React from "react";
 
 interface AnimatedContentProps {
@@ -9,17 +9,13 @@ interface AnimatedContentProps {
 
 const AnimatedContent = ({ animationData, height = 400, width }: AnimatedContentProps) => (
   <Lottie
-    options={{
-      loop: true,
-      autoplay: true,
-      animationData,
-      rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice",
-        scaleMode: "contain",
-      },
+    animationData={animationData}
+    loop
+    autoplay
+    style={{
+      height,
+      width,
     }}
-    height={height}
-    width={width}
   />
 );
 

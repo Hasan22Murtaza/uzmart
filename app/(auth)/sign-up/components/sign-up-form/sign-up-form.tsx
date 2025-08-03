@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignUpViews } from "@/app/(auth)/types";
-import { ConfirmationResult } from "@firebase/auth";
+import type { ConfirmationResult } from "firebase/auth";
 import { error } from "@/components/alert";
 import { useAuth } from "@/hook/use-auth";
 

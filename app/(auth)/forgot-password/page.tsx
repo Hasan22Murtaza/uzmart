@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { LoadingCard } from "@/components/loading";
 import { ForgotPasswordViews } from "@/app/(auth)/types";
-import { ConfirmationResult } from "@firebase/auth";
+import type { ConfirmationResult } from "firebase/auth";
 
 const Form = dynamic(() => import("./components/form/form"), {
   loading: () => <LoadingCard />,

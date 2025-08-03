@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
-import { ConfirmationResult } from "@firebase/auth";
+import type { ConfirmationResult } from "firebase/auth";
 import { SignUpViews } from "@/app/(auth)/types";
 import { LoadingCard } from "@/components/loading";
 

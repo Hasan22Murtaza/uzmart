@@ -2,7 +2,7 @@ export type InitialStateType = {
   main: number;
   sub: number;
 };
-type ActionMap<M extends { [index: string]: any }> = {
+type ActionMap<M extends { [index: string]: unknown }> = {
   [Key in keyof M]: M[Key] extends undefined
     ? {
         type: Key;

@@ -1,7 +1,7 @@
 import { useAuth } from "@/hook/use-auth";
 import useSettingsStore from "@/global-store/settings";
 import { useTranslation } from "react-i18next";
-import { ConfirmationResult } from "@firebase/auth";
+import type { ConfirmationResult } from "firebase/auth";
 import { useCountDown } from "@/hook/use-countdown";
 import { error, success } from "@/components/alert";
 import React, { useEffect, useState } from "react";

@@ -29,7 +29,12 @@ i18n
       backendOptions: [
         {
           loadPath: "{{lng}}|{{ns}}",
-          request: (options: any, url: any, payload: any, callback: any) => {
+          request: (
+            options: unknown,
+            url: string,
+            payload: unknown,
+            callback: (error: Error | null, response?: { data: unknown; status: number }) => void
+          ) => {
             try {
               const [lng] = url.split("|");
               loadResources(lng).then((response) => {
