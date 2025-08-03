@@ -1,15 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import fetcher from "@/lib/fetcher";
-import { parseSettings } from "@/utils/parse-settings";
-import { DefaultResponse, Setting } from "@/types/global";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
+// Simple settings fetch without external dependencies
 const getSettings = async () => {
   try {
-    const settings = await fetcher<DefaultResponse<Setting[]>>("v1/rest/settings");
-    return parseSettings(settings?.data);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.uzmart.org";
+    const response = await fetch(`${baseUrl}/v1/rest/settings`);
+    if (!response.ok) return {};
+    
+    const data = await response.json();
+    if (!data?.data) return {};
+    
+    // Parse settings into a simple object
+    const settings: Record<string, string> = {};
+    data.data.forEach((setting: { key: string; value: string }) => {
+      settings[setting.key] = setting.value;
+    });
+    
+    return settings;
   } catch (e) {
     return {};
   }
@@ -17,18 +26,23 @@ const getSettings = async () => {
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
-  const settings = await getSettings();
+  
+  // Skip middleware for public files
   if (PUBLIC_FILE.test(pathname)) {
     return NextResponse.next();
   }
 
-  if (!cookies().has("token") && pathname.includes("/profile")) {
+  // Check for token in cookies using Edge Function compatible method
+  const token = request.cookies.get("token");
+  
+  if (!token && pathname.includes("/profile")) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
-    NextResponse.redirect("", 302);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(loginUrl, 302);
   }
 
+  // Get settings for UI type routing
+  const settings = await getSettings();
   const uiType = ["2", "3"].find((type) => type === settings?.ui_type);
 
   if (!!uiType && (pathname === "/" || pathname === "/products")) {
