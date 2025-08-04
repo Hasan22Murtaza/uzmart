@@ -5,7 +5,7 @@ const PUBLIC_FILE = /\.(.*)$/;
 // Simple settings fetch without external dependencies
 const getSettings = async () => {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.uzmart.org";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://api.uzmart.org";
     const response = await fetch(`${baseUrl}/v1/rest/settings`);
     if (!response.ok) return {};
     
